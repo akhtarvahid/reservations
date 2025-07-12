@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
+import * as Joi from 'joi';
+import { JwtModule } from '@nestjs/jwt';
+import { LoggerModule } from '@app/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from './users/users.module';
-import { UsersController } from './users/users.controller';
-import { LoggerModule } from '@app/common';
-import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as Joi from 'joi';
 import { LocalStategy } from './strategies/local.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { LocalStategy } from './strategies/local.strategy';
         MONGO_URI: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION: Joi.string().required(),
-        PORT: Joi.number().required()
+        PORT: Joi.number().required(),
       }),
     }),
     JwtModule.registerAsync({
@@ -33,6 +33,6 @@ import { LocalStategy } from './strategies/local.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStategy],
+  providers: [AuthService, LocalStategy, JwtStrategy],
 })
 export class AuthModule {}
