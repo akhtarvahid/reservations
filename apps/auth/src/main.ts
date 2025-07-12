@@ -1,8 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AuthModule } from './auth.module';
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
-  await app.listen(process.env.port ?? 3000);
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useLogger(app.get(Logger));
+  const configService = app.get(ConfigService);
+  await app.listen(configService.get('AUTH_PORT') || 3001);
+  console.log(
+    `[AUTH] App is running at http://localhost:${configService.get('AUTH_PORT') || 3001}`,
+  );
 }
 bootstrap();

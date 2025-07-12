@@ -13,3 +13,18 @@ services:
       - MONGO_URI=${MONGO_URI}
     volumes:
       - .:/usr/src/app
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: npm run start:dev auth
+    env_file:
+      - ./.env
+    ports:
+      - '3001:3031'
+    environment:
+      - MONGO_URI=${MONGO_URI}
+    volumes:
+      - .:/usr/src/app      
