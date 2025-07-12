@@ -6,7 +6,7 @@ services:
       target: development
     command: npm run start:dev reservation
     env_file:
-      - ./.env
+      - ./apps/reservation/.env
     ports:
       - '3000:3030'
     environment:
@@ -21,7 +21,7 @@ services:
       target: development
     command: npm run start:dev auth
     env_file:
-      - ./.env
+      - ./apps/auth/.env
     ports:
       - '3001:3031'
     environment:
