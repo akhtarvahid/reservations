@@ -12,13 +12,12 @@ export class ReservationService {
     return this.reservationsRepository.create({
       ...createReservationDto,
       timestamp: new Date(),
-      userId: '12',
-      info: 'Extra info field',
+      userId: '12'
     });
   }
 
   async findAll() {
-    return this.reservationsRepository.find({});
+    return (await this.reservationsRepository.find({})).reverse();
   }
 
   async findOne(_id: string) {
