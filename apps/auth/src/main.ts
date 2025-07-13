@@ -20,9 +20,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useLogger(app.get(Logger));
   await app.startAllMicroservices();
-  await app.listen(configService.get('HTTP_PORT') || 3001);
+  await app.listen(configService.get('HTTP_PORT')!);
   console.log(
-    `[AUTH] App is running at http://localhost:${configService.get('PORT') || 3001}`,
+    `[AUTH] App is running at http://localhost:${configService.get('HTTP_PORT')!}`,
   );
 }
 bootstrap();
