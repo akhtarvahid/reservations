@@ -1,7 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { PaymentsCreateChargeDto } from './dto/payments-create-charge.dto';
+import { NOTIFICATIONS_SERVICE } from '@app/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class PaymentsService {
@@ -9,7 +11,11 @@ export class PaymentsService {
     apiVersion: '2025-06-30.basil',
   });
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    @Inject(NOTIFICATIONS_SERVICE)
+    private readonly notificationsService: ClientProxy,
+  ) {}
 
   async createCharge({ card, amount, email }: PaymentsCreateChargeDto) {
     try {
@@ -30,6 +36,12 @@ export class PaymentsService {
           allow_redirects: 'never',
         },
         receipt_email: email, // Add email receipt
+      });
+
+      // Emitting the event to send email notification
+      this.notificationsService.emit('notify_email', {
+        email,
+        text: `Your payment of $${amount} has completed successfully.`,
       });
 
       return paymentIntent;
