@@ -5,6 +5,8 @@ import { ReservationsRepository } from './reservation.repository';
 import { ClientProxy } from '@nestjs/microservices';
 import { PAYMENTS_SERVICE, UserDto } from '@app/common';
 import { map } from 'rxjs';
+import { ReservationResponseDto } from './dto/reservation-response.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class ReservationService {
@@ -39,8 +41,11 @@ export class ReservationService {
     return (await this.reservationsRepository.find({})).reverse();
   }
 
-  async findOne(_id: string) {
-    return this.reservationsRepository.findOne({ _id });
+  async findOne(_id: string): Promise<ReservationResponseDto> {
+    const reservation = await this.reservationsRepository.findOne({ _id });
+    const response = plainToClass(ReservationResponseDto, reservation);
+
+    return response;
   }
 
   async update(_id: string, updateReservationDto: UpdateReservationDto) {

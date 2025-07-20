@@ -12,6 +12,7 @@ import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { CurrentUser, JwtAuthGuard, UserDto } from '@app/common';
+import { ReservationResponseDto } from './dto/reservation-response.dto';
 
 @Controller('reservation')
 export class ReservationController {
@@ -32,8 +33,8 @@ export class ReservationController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.reservationService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<ReservationResponseDto> {
+    return await this.reservationService.findOne(id);
   }
 
   @Patch(':id')
