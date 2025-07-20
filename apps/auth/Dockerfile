@@ -12,10 +12,10 @@ RUN npm install -g npm
 
 RUN npm install
 
-COPY apps/reservation apps/reservation
+COPY apps/auth apps/auth
 COPY libs libs
 
-RUN npm run build reservation
+RUN npm run build auth
 
 # Production
 FROM node:alpine as production
