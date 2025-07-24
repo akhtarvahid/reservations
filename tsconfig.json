@@ -18,13 +18,9 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/common": [
-        "libs/common/src"
-      ],
-      "@app/common/*": [
-        "libs/common/src/*"
-      ],
+      "@app/common": ["libs/common/src"],
+      "@app/common/*": ["libs/common/src/*"],
       "@nestjs/common": ["node_modules/@nestjs/common"] // Logger Property Conflict fix
-    },
+    }
   }
 }
